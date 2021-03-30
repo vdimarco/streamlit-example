@@ -101,7 +101,7 @@ else:
         st.write(df_leaderboard)
 
 # To register master data
-if username == 'admin': # CHANGE HERE AS YOU WANT
+if username == 'wiseguy':
     change_master_key = st.checkbox('Change Master Key')
 
     if change_master_key:
