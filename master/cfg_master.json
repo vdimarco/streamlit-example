@@ -1,0 +1,1 @@
+{"competition_type": "Binary Classification", "metric_type": "Accuracy", "index_col": "PassengerId", "target_col": "Survived"}
