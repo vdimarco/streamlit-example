@@ -59,13 +59,13 @@ else:
     competition_type, metric_type= cfg_master['competition_type'], cfg_master['metric_type']
     index_col, target_col = cfg_master['index_col'], cfg_master['target_col']
 
-    st.subheader("Competition ")
-    st.code(f"""
-        Competition Type: {competition_type}
-        Metric: {metric_type}
-        index  column name : {index_col}
-        target column name : {target_col}
-    """)
+    # st.subheader("Competition ")
+    # st.code(f"""
+    #     Competition Type: {competition_type}
+    #     Metric: {metric_type}
+    #     index  column name : {index_col}
+    #     target column name : {target_col}
+    # """)
 
     # set scorer as metric type
     scorer_dict = {"Accuracy": accuracy_score, "Precision": precision_score, "Recall" : recall_score, "Auc" : auc, 
@@ -73,24 +73,24 @@ else:
     scorer = scorer_dict[metric_type] # CHANGE HERE AS YOU WANT
     greater_is_better = False if metric_type in ["MAE", "MSE"] else True # CHANGE HERE AS YOU WANT
 
-    uploaded_file = st.file_uploader("Upload Submission CSV File",type='csv')
-    if st.button("SUBMIT"):
-        if uploaded_file is None:
-            st.text("UPLOAD FIRST")
-        else:
-            # save submission
-            df_submission = pd.read_csv(uploaded_file)
-            datetime_now = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename_submission = f"submission/sub_{username}__{datetime_now}.csv"
-            df_submission[[index_col, target_col]].to_csv(filename_submission, index = False)
-            # calculate score
-            df = df_master.merge(df_submission, how = 'left', on = index_col)
-            score = scorer(df[target_col + "_x"], df[target_col + "_y"]) # scorer(true_label, pred_label)
-            score = round(score,5)
-            st.text(f"YOUR {metric_type}: {score}")
-            # save score
-            with open("leaderboard.csv", "a+") as leaderboard_csv:
-                leaderboard_csv.write(f"{username},{score},{datetime_now}\n")
+    # uploaded_file = st.file_uploader("Upload Submission CSV File",type='csv')
+    # if st.button("SUBMIT"):
+    #     if uploaded_file is None:
+    #         st.text("UPLOAD FIRST")
+    #     else:
+    #         # save submission
+    #         df_submission = pd.read_csv(uploaded_file)
+    #         datetime_now = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #         filename_submission = f"submission/sub_{username}__{datetime_now}.csv"
+    #         df_submission[[index_col, target_col]].to_csv(filename_submission, index = False)
+    #         # calculate score
+    #         df = df_master.merge(df_submission, how = 'left', on = index_col)
+    #         score = scorer(df[target_col + "_x"], df[target_col + "_y"]) # scorer(true_label, pred_label)
+    #         score = round(score,5)
+    #         st.text(f"YOUR {metric_type}: {score}")
+    #         # save score
+    #         with open("leaderboard.csv", "a+") as leaderboard_csv:
+    #             leaderboard_csv.write(f"{username},{score},{datetime_now}\n")
 
     # Showing Leaderboard 
     st.header("Leaderboard")
