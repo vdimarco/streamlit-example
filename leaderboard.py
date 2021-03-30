@@ -24,25 +24,25 @@ def relative_time(t_diff):
             return f"{seconds}s"
 
 def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = True):
-    df_leaderboard = pd.read_csv('leaderboard.csv', header = None)
-    df_leaderboard.columns = ['Username', 'Score', 'Submission Time']
+    df_leaderboard = pd.read_csv('leaderboard.csv')
+    df_leaderboard.columns = ['Rank','Index','Pick1','Pick2','Pick3','Username','Submitted','Paid','Return1','Return2','Return3','Score','Competition_Date','Competition_Number']
     df_leaderboard['counter'] = 1
     df_leaderboard = df_leaderboard.groupby('Username').agg({"Score": "max",
                                                             "counter": "count",
-                                                            "Submission Time": "max"})
+                                                            "Submitted": "max"})
     df_leaderboard = df_leaderboard.sort_values("Score", ascending = not greater_is_better)
     df_leaderboard = df_leaderboard.reset_index()                                                    
-    df_leaderboard.columns = ['Username','Score', 'Entries', 'Last']
-    df_leaderboard['Last'] = df_leaderboard['Last'].map(lambda x: relative_time(datetime.now() - datetime.strptime(x, "%Y%m%d_%H%M%S")))
+    df_leaderboard.columns = ['Username','Score', 'Entries', 'Submitted']
+    # df_leaderboard['Submission Time'] = df_leaderboard['Submitted']
     return df_leaderboard
 
 # Title
-st.title("Simple Competition Leaderboard")
+st.title("Global Leaderboard")
 
 # Username Input
-username = st.text_input("Username", value = "billy", max_chars= 20,)
+username = st.text_input("Username", value = "Wiz", max_chars= 20,)
 username = username.replace(",","") # for storing csv purpose
-st.header(f"Hi {username} !!!")
+st.header(f"What's Up {username}!")
 
 # Check if master data has been registered:
 master_files = os.listdir('master')
