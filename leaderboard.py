@@ -31,6 +31,7 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
                                                             "Rank": "max",
                                                             "Score": "max",
                                                             # "counter": "count",
+
                                                             "Pick1": "max",
                                                             "Pick2": "max",
                                                             "Pick3": "max",
@@ -100,7 +101,7 @@ else:
     #             leaderboard_csv.write(f"{username},{score},{datetime_now}\n")
 
     # Showing Leaderboard 
-    st.header("Leaderboard")
+    # st.text("Leaderboard Updated Daily")
     if os.stat("leaderboard.csv").st_size == 0:
         st.text("NO SUBMISSION YET")
     else:
