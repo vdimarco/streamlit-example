@@ -27,22 +27,28 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
     df_leaderboard = pd.read_csv('leaderboard.csv')
     df_leaderboard.columns = ['Rank','Index','Pick1','Pick2','Pick3','Username','Submitted','Paid','Return1','Return2','Return3','Score','Competition_Date','Competition_Number']
     df_leaderboard['counter'] = 1
-    df_leaderboard = df_leaderboard.groupby('Username').agg({"Score": "max",
+    df_leaderboard = df_leaderboard.groupby('Username').agg({
+                                                            "Rank": "max",
+                                                            "Score": "max",
                                                             "counter": "count",
-                                                            "Submitted": "max"})
+                                                            "Pick1": "max",
+                                                            "Pick2": "max",
+                                                            "Pick3": "max",
+                                                            "Submitted": "max"
+                                                            })
     df_leaderboard = df_leaderboard.sort_values("Score", ascending = not greater_is_better)
     df_leaderboard = df_leaderboard.reset_index()                                                    
-    df_leaderboard.columns = ['Username','Score', 'Entries', 'Submitted']
+    df_leaderboard.columns = ['Username','Rank','Score', 'Entries', 'Pick1','Pick2','Pick3', 'Submitted',]
     # df_leaderboard['Submission Time'] = df_leaderboard['Submitted']
     return df_leaderboard
 
 # Title
-st.title("Global Leaderboard")
+# st.title("Global Leaderboard")
 
 # Username Input
-username = st.text_input("Username", value = "Wiz", max_chars= 20,)
-username = username.replace(",","") # for storing csv purpose
-st.header(f"What's Up {username}!")
+# username = st.text_input("Username", value = "Wiz", max_chars= 20,)
+# username = username.replace(",","") # for storing csv purpose
+# st.header(f"What's Up {username}!")
 
 # Check if master data has been registered:
 master_files = os.listdir('master')
@@ -100,48 +106,48 @@ else:
         df_leaderboard = get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = greater_is_better)
         st.write(df_leaderboard)
 
-# To register master data
-if username == 'wiseguy':
-    change_master_key = st.checkbox('Change Master Key')
+# # To register master data
+# if username == 'wiseguy':
+#     change_master_key = st.checkbox('Change Master Key')
 
-    if change_master_key:
-        # Set competition properties
-        competition_type = ["Binary Classification", "Multi Class Classification", "Regression",]
-        choosen_competition_type = st.selectbox("Select Competition Type",competition_type)
-        metric_type_dict = {"Binary Classification": ["Accuracy", "Precision", "Recall", "Auc", "F1"], 
-                            "Multi Class Classification" : ["Accuracy"], 
-                            "Regression" : ["MAE", "MSE", "r2"]}
-        metric_type = metric_type_dict[choosen_competition_type]
-        choosen_metric_type = st.selectbox("Select Metric Type",metric_type)
+#     if change_master_key:
+#         # Set competition properties
+#         competition_type = ["Binary Classification", "Multi Class Classification", "Regression",]
+#         choosen_competition_type = st.selectbox("Select Competition Type",competition_type)
+#         metric_type_dict = {"Binary Classification": ["Accuracy", "Precision", "Recall", "Auc", "F1"], 
+#                             "Multi Class Classification" : ["Accuracy"], 
+#                             "Regression" : ["MAE", "MSE", "r2"]}
+#         metric_type = metric_type_dict[choosen_competition_type]
+#         choosen_metric_type = st.selectbox("Select Metric Type",metric_type)
 
-        # Master Data Frame
-        uploaded_file_master = st.file_uploader("Upload Master CSV File",type='csv')
-        if uploaded_file_master is not None:
-            df_master_register = pd.read_csv(uploaded_file_master)
-            columns_master = list(df_master_register.columns)
-            # Choose required Columns
-            choosen_col_index  = st.selectbox("Select Index Column",columns_master)
-            choosen_col_target = st.selectbox("Select Target Column",[col for col in columns_master if col != choosen_col_index])
-            if st.checkbox('Show Master Data'):
-                st.text(f"TOTAL ROW: {len(df_master_register)}")
-                df_master_register.loc[:99, [choosen_col_index, choosen_col_target]]
-            # Change the master dataset
-            if st.button("CHANGE"):
-                if df_master_register[choosen_col_index].value_counts().max() == 1:
-                    filename_master = "master/df_master.csv"
-                    filename_master_cfg = "master/cfg_master.json"
-                    df_master_register[[choosen_col_index, choosen_col_target]].to_csv(filename_master, index = False)
-                    st.text(f"Master data saved into {filename_master}")
-                    cfg_master_register = {"competition_type" : choosen_competition_type,
-                                            "metric_type" : choosen_metric_type,
-                                            "index_col" : choosen_col_index,
-                                            "target_col" : choosen_col_target}
-                    with open(filename_master_cfg, 'w') as outfile:
-                        json.dump(cfg_master_register, outfile)
-                    st.text(f"Master config saved into {filename_master_cfg}")
-                    # Change current master
-                    cfg_master = cfg_master_register.copy()
-                    df_master = df_master_register.copy()
-                else:
-                    st.text("Index columns is not unique, cannot process")
+#         # Master Data Frame
+#         uploaded_file_master = st.file_uploader("Upload Master CSV File",type='csv')
+#         if uploaded_file_master is not None:
+#             df_master_register = pd.read_csv(uploaded_file_master)
+#             columns_master = list(df_master_register.columns)
+#             # Choose required Columns
+#             choosen_col_index  = st.selectbox("Select Index Column",columns_master)
+#             choosen_col_target = st.selectbox("Select Target Column",[col for col in columns_master if col != choosen_col_index])
+#             if st.checkbox('Show Master Data'):
+#                 st.text(f"TOTAL ROW: {len(df_master_register)}")
+#                 df_master_register.loc[:99, [choosen_col_index, choosen_col_target]]
+#             # Change the master dataset
+#             if st.button("CHANGE"):
+#                 if df_master_register[choosen_col_index].value_counts().max() == 1:
+#                     filename_master = "master/df_master.csv"
+#                     filename_master_cfg = "master/cfg_master.json"
+#                     df_master_register[[choosen_col_index, choosen_col_target]].to_csv(filename_master, index = False)
+#                     st.text(f"Master data saved into {filename_master}")
+#                     cfg_master_register = {"competition_type" : choosen_competition_type,
+#                                             "metric_type" : choosen_metric_type,
+#                                             "index_col" : choosen_col_index,
+#                                             "target_col" : choosen_col_target}
+#                     with open(filename_master_cfg, 'w') as outfile:
+#                         json.dump(cfg_master_register, outfile)
+#                     st.text(f"Master config saved into {filename_master_cfg}")
+#                     # Change current master
+#                     cfg_master = cfg_master_register.copy()
+#                     df_master = df_master_register.copy()
+#                 else:
+#                     st.text("Index columns is not unique, cannot process")
     
