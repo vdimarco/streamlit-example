@@ -41,7 +41,7 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
                                                             })
     df_leaderboard = df_leaderboard.sort_values("Score", ascending = not greater_is_better)
     df_leaderboard = df_leaderboard.reset_index()                                                    
-    df_leaderboard.columns = ['Username','Rank','Score', '1st Pick','2nd Pick','3rd Pick']
+    df_leaderboard.columns = ['Username','Rank','Earnings (Dai)', '1st Pick','2nd Pick','3rd Pick']
     # df_leaderboard['Submission Time'] = df_leaderboard['Submitted']
     return df_leaderboard
 
@@ -52,6 +52,7 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
 # username = st.text_input("Username", value = "Wiz", max_chars= 20,)
 # username = username.replace(",","") # for storing csv purpose
 # st.header(f"What's Up {username}!")
+
 
 # Check if master data has been registered:
 master_files = os.listdir('master')
@@ -68,7 +69,9 @@ else:
     competition_type, metric_type= cfg_master['competition_type'], cfg_master['metric_type']
     index_col, target_col = cfg_master['index_col'], cfg_master['target_col']
 
-    # st.subheader("Competition ")
+
+
+    st.text("####### Updated {}".format(datetime.now().strftime("%Y-%m-%d")))
     # st.code(f"""
     #     Competition Type: {competition_type}
     #     Metric: {metric_type}
