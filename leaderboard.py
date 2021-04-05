@@ -23,6 +23,8 @@ def relative_time(t_diff):
         else:
             return f"{seconds}s"
 
+# TODO: last updated on X date
+
 def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = True):
     df_leaderboard = pd.read_csv('leaderboard.csv')
     df_leaderboard.columns = ['Rank','Index','Pick1','Pick2','Pick3','Username','Submitted','Paid','Return1','Return2','Return3','Score','Competition_Date','Competition_Number']
@@ -31,16 +33,15 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
                                                             "Rank": "max",
                                                             "Score": "max",
                                                             # "counter": "count",
-
                                                             "Pick1": "max",
                                                             "Pick2": "max",
                                                             "Pick3": "max",
                                                             # "Submitted": "max",
-                                                            "Competition_Number" : "max"
+                                                            # "Competition_Number" : "max"
                                                             })
     df_leaderboard = df_leaderboard.sort_values("Score", ascending = not greater_is_better)
     df_leaderboard = df_leaderboard.reset_index()                                                    
-    df_leaderboard.columns = ['Username','Rank','Score', '1st Pick','2nd Pick','3rd Pick','Competition']
+    df_leaderboard.columns = ['Username','Rank','Score', '1st Pick','2nd Pick','3rd Pick']
     # df_leaderboard['Submission Time'] = df_leaderboard['Submitted']
     return df_leaderboard
 
