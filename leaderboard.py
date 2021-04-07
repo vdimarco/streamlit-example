@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import os
 from datetime import datetime
+import pytz
 
 from sklearn.metrics import (accuracy_score, auc, f1_score, precision_score, recall_score,
                             mean_absolute_error, mean_squared_error, r2_score)
@@ -71,7 +72,7 @@ else:
 
 
 
-    st.text("####### Updated {}".format(datetime.now().strftime("%Y-%m-%d")))
+    st.text("####### Updated {}".format(datetime.now(pytz.utc).strftime("%Y-%m-%d")))
     # st.code(f"""
     #     Competition Type: {competition_type}
     #     Metric: {metric_type}
