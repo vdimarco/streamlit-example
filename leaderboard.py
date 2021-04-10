@@ -31,7 +31,7 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
     df_leaderboard.columns = ['Rank','Index','Pick1','Pick2','Pick3','Username','Submitted','Paid','Return1','Return2','Return3','Score','Competition_Date','Competition_Number']
     df_leaderboard['counter'] = 1
     df_leaderboard = df_leaderboard.groupby('Username').agg({
-                                                            "Rank": "max",
+                                                            "Date": "max",
                                                             "Score": "max",
                                                             # "counter": "count",
                                                             "Pick1": "max",
@@ -42,7 +42,7 @@ def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = 
                                                             })
     df_leaderboard = df_leaderboard.sort_values("Score", ascending = not greater_is_better)
     df_leaderboard = df_leaderboard.reset_index()                                                    
-    df_leaderboard.columns = ['Username','Rank','Earnings (Dai)', '1st Pick','2nd Pick','3rd Pick']
+    df_leaderboard.columns = ['Username','Date','Score', '1st Pick','2nd Pick','3rd Pick']
     # df_leaderboard['Submission Time'] = df_leaderboard['Submitted']
     return df_leaderboard
 
