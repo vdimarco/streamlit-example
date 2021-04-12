@@ -161,3 +161,11 @@ else:
 #                 else:
 #                     st.text("Index columns is not unique, cannot process")
     
+# Display Score Over time (Chart)
+st.header('Return Over Time')
+df_chart = pd.read_csv('chart.csv')
+chart_data = pd.DataFrame(data=df_chart)
+st.line_chart(chart_data)
+# st.write(df_chart)
+
+ 
