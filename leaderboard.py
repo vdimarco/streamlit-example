@@ -28,7 +28,7 @@ def relative_time(t_diff):
 
 def get_leaderboard_dataframe(csv_file = 'leaderboard.csv', greater_is_better = True):
     df_leaderboard = pd.read_csv('leaderboard.csv')
-    df_leaderboard.columns = ['rank','index','Pick1','Pick2','Pick3','Name','Submitted_At','Paid','Return1','Return2','Return3','Score','Competition_Start','Competition_End']
+    # df_leaderboard.columns = ['rank','index','Pick1','Pick2','Pick3','Name','Submitted_At','Paid','Return1','Return2','Return3','Score','Competition_Start','Competition_End']
     df_leaderboard['counter'] = 1
     df_leaderboard = df_leaderboard.groupby('Name').agg({
                                                             # "Submitted_At": "max",
