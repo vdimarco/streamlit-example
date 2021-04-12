@@ -9,6 +9,9 @@ from sklearn.metrics import (accuracy_score, auc, f1_score, precision_score, rec
                             mean_absolute_error, mean_squared_error, r2_score)
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
+CURRENT_THEME = "green"
+IS_DARK_THEME = False
+
 # funtions
 def relative_time(t_diff):
     days, seconds = t_diff.days, t_diff.seconds
