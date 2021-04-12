@@ -75,7 +75,7 @@ else:
 
 
 
-    st.text("####### Updated {}".format(datetime.today().strftime("%Y-%m-%d")))
+    st.text("Updated {}".format(datetime.today().strftime("%Y-%m-%d")))
     # st.code(f"""
     #     Competition Type: {competition_type}
     #     Metric: {metric_type}
